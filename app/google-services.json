@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "114172857422",
+    "project_id": "dr-uber-db6af",
+    "storage_bucket": "dr-uber-db6af.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:114172857422:android:5faf66a122342e267a071f",
+        "android_client_info": {
+          "package_name": "com.twinternet.druber"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "114172857422-h7dmn8rjfg0nnd4pvtk8hmuifak41ng9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBTT0cAnvfqWDayDfB9yRb4lbh_J9TR4Tw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "114172857422-h7dmn8rjfg0nnd4pvtk8hmuifak41ng9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

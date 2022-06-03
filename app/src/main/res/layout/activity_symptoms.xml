@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbars="vertical"
+    tools:context=".SignUpActivity">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="22dp"
+            android:layout_marginEnd="22dp"
+            android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_symptoms"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="What are your symptoms?"
+                    android:fontFamily="@font/pacifico"
+                    android:textAlignment="center"
+                    android:textColor="@color/teal_700"
+                    android:textSize="16sp" />
+
+                <ListView
+                    android:id="@+id/listview_data"
+                    android:layout_width="match_parent"
+                    android:layout_height="554dp"
+                    android:choiceMode="multipleChoice">
+
+                </ListView>
+
+                <Button
+                        android:id="@+id/Emergency_contactDoctor_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="Contact Doctor"
+                        android:backgroundTint="@color/black">
+
+                </Button>
+
+
+
+
+
+
+        </LinearLayout>
+
+</ScrollView>

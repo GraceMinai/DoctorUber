@@ -1,17 +1,25 @@
 package com.twinternet.druber;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+
+import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.twinternet.druber.Adapter.FragmentAdapter;
 
 
 public class MainActivity extends AppCompatActivity
 
 {
     private Button welcome;
-
+    private ViewPager viewPager;
+    private TabLayout tabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -19,19 +27,14 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        getSupportActionBar().hide();
+        viewPager = findViewById(R.id.viewPager_id);
+        viewPager.setAdapter(new FragmentAdapter(getSupportFragmentManager()));
 
-        welcome = findViewById(R.id.btn_welcome);
-        welcome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                Intent intent = new Intent(MainActivity.this, SignUpActivity.class);
-                startActivity(intent);
-                finish();
+        tabLayout = findViewById(R.id.tabLayout_id);
+        tabLayout.setupWithViewPager(viewPager);
 
-            }
-        });
+
+
 
 
     }

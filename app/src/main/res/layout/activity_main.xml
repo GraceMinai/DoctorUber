@@ -1,51 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/slidrimage1"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
+    
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout_id"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/teal_700"
+        android:elevation="12dp"
+        app:tabIndicator="@color/white"
+        app:tabSelectedTextColor="@color/white"
+        app:tabMaxWidth="8dp"
+        app:tabGravity="fill"
+        app:tabMode="fixed"
+        app:tabTextColor="@color/white">
 
+    </com.google.android.material.tabs.TabLayout>
 
-        <TextView
-            android:id="@+id/tv_emergency_emergency"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:fontFamily="@font/pacifico"
-            android:text="Do you have an Emergency? "
-            android:textAlignment="center"
-            android:textColor="@color/teal_700"
-            android:textSize="20sp" />
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager_id"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/tv_gotyoucovered"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv_emergency_emergency"
-            android:layout_marginTop="50dp"
-            android:fontFamily="@font/pacifico"
-            android:text="Uber Doctors has got you covered. This app links you to a sea of doctors near you. Select any available Doctors below and get the help you need"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
-
-
-
-    <Button
-        android:id="@+id/btn_welcome"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Welcome"
-        android:padding="20dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="300dp">
-
-    </Button>
+    </androidx.viewpager2.widget.ViewPager2>
 
 
 
-</RelativeLayout>
+
+
+
+</LinearLayout>

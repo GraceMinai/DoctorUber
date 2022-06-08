@@ -4,21 +4,33 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/HP/AndroidStudioProjects/DrUber/app/src/main/res/drawable/background.xml" value="0.1735" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/DrUber/app/src/main/res/drawable/button_border.xml" value="0.184" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/DrUber/app/src/main/res/drawable/edit_text_border.xml" value="0.184" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/DrUber/app/src/main/res/drawable/ic_baseline_doctor_24.xml" value="0.184" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/DrUber/app/src/main/res/drawable/ic_baseline_done_24.xml" value="0.1735" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/DrUber/app/src/main/res/drawable/ic_driverscar.xml" value="0.1735" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/DrUber/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1735" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/DrUber/app/src/main/res/drawable/topless_details_boarder.xml" value="0.184" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/DrUber/app/src/main/res/drawable/topless_details_border.xml" value="0.184" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/DrUber/app/src/main/res/layout/about_popup.xml" value="0.259375" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/DrUber/app/src/main/res/layout/activity_emergency.xml" value="0.2" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/DrUber/app/src/main/res/layout/activity_emergrncy.xml" value="0.2" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/DrUber/app/src/main/res/layout/activity_google_map.xml" value="0.264" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/DrUber/app/src/main/res/layout/activity_login.xml" value="0.1721014492753623" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/DrUber/app/src/main/res/layout/activity_login2.xml" value="0.25" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/DrUber/app/src/main/res/layout/activity_main.xml" value="0.2" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/DrUber/app/src/main/res/layout/activity_onboarding_screen.xml" value="0.259375" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/DrUber/app/src/main/res/layout/activity_patient_details.xml" value="0.259375" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/DrUber/app/src/main/res/layout/activity_settings.xml" value="0.259375" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/DrUber/app/src/main/res/layout/activity_sign_up.xml" value="0.264" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/DrUber/app/src/main/res/layout/activity_splash_screen.xml" value="0.259375" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/DrUber/app/src/main/res/layout/activity_symptoms.xml" value="0.259375" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/DrUber/app/src/main/res/layout/amount_popup_dialog.xml" value="0.259375" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/DrUber/app/src/main/res/layout/custom_dialog.xml" value="0.259375" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/DrUber/app/src/main/res/layout/diagnosis.xml" value="0.2557291666666667" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/DrUber/app/src/main/res/layout/info_popup.xml" value="0.2557291666666667" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/DrUber/app/src/main/res/layout/success_msgcustom_dialog.xml" value="0.259375" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/DrUber/app/src/main/res/layout/topless_details_border.xml" value="0.2453125" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/DrUber/app/src/main/res/menu/main_menu.xml" value="0.2557291666666667" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/DrUber/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1735" />
       </map>

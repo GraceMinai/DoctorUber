@@ -1,7 +1,9 @@
 package com.twinternet.druber;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -11,7 +13,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -23,19 +29,29 @@ public class SignUpActivity extends AppCompatActivity
     public EditText fullName, email, phoneNumber, password, confirmPassword;
     public Button signUp;
 
-    public FirebaseAuth mAuth;
+    private  FirebaseAuth mAuth;
+    FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+    DatabaseReference dataRef = firebaseDatabase.getReference().child("Users");
+    ProgressDialog progressDialog;
 
-    //Creating variables for the Database reference
-    DatabaseReference myDatabaseReference;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-
         getSupportActionBar().hide();
 
+
         mAuth = FirebaseAuth.getInstance();
+
+
+
+        progressDialog = new ProgressDialog(SignUpActivity.this);
+        progressDialog.setTitle("Please wait");
+        progressDialog.setMessage("We are creating your account...");
+
+
 
         signIn = findViewById(R.id.tv_signIn);
         fullName = findViewById(R.id.edt_SignUp_FullName);
@@ -45,8 +61,6 @@ public class SignUpActivity extends AppCompatActivity
         confirmPassword = findViewById(R.id.edt_SignUp_ConfirmPassword);
         signUp = findViewById(R.id.btn_signUp);
 
-        //Initialising the database reference
-        myDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
 
 
 
@@ -64,14 +78,13 @@ public class SignUpActivity extends AppCompatActivity
         });
 
 
-        //if above condition is met, run the following methods
         signUp.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                uploadInformation();
-                signUp();
+
+                registerUser();
 
             }
         });
@@ -80,58 +93,74 @@ public class SignUpActivity extends AppCompatActivity
 
     }
 
+    private void registerUser() {
 
-    private void uploadInformation()
-    {
         //Converting the user input into String
-        String myFullName = fullName.getText().toString().trim();
-        String myEmail = email.getText().toString().trim();
-        String myPhoneNumber = phoneNumber.getText().toString().trim();
+        String userFullName = fullName.getText().toString().trim();
+        String userEmail = email.getText().toString().trim();
+        String userPhoneNumber = phoneNumber.getText().toString().trim();
+        String firstPassword = password.getText().toString().trim();
+        String userPassword = confirmPassword.getText().toString().trim();
 
-        //To ensure that user does not leave any blank fields (not empty)
-        if(!TextUtils.isEmpty(myFullName)
-        && !TextUtils.isEmpty(myEmail)
-        && !TextUtils.isEmpty(myPhoneNumber))
-
+        //Validation to ensure the user does not leave any spaces blank
+        if (TextUtils.isEmpty(userFullName)
+        || TextUtils.isEmpty(userEmail)
+        || TextUtils.isEmpty(userPhoneNumber)
+        || TextUtils.isEmpty(firstPassword)
+        || TextUtils.isEmpty(userPassword))
         {
-            //If user has not left any spaces... Do this...
-            //Generating key for each user
-            String userKey = myDatabaseReference.push().getKey();
-
-
-            //Uploading information to the database
-            UserDetails userDetails = new UserDetails(myFullName, myEmail, myPhoneNumber);
-
-            //Creating a new child to store details of each specific user
-            myDatabaseReference.child(userKey).setValue(userDetails);
-
-            //Clearing the edit texts
-            fullName.setText("");
-            email.setText("");
-            phoneNumber.setText("");
-
-            //For successful upload
-            Toast.makeText(this, "Successfully Uploaded", Toast.LENGTH_SHORT).show();
-
-
-
+            //Ask the user to fill in all spaces
+            Toast.makeText(this, "Please fill in all spaces", Toast.LENGTH_SHORT).show();
 
         }
-
         else
         {
-            //if any field is left empty.. display the toast below
-            Toast.makeText(this, "Ensure all fields are filled then try again", Toast.LENGTH_SHORT).show();
+            //Check if passwords match
+            if (firstPassword.equals(userPassword))
+            {
+
+                //Register user
+                progressDialog.show();
+                mAuth.createUserWithEmailAndPassword(userEmail, userPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        progressDialog.dismiss();
+                        if (task.isSuccessful())
+                        {
+                            //Store the user data in Realtime database
+                            UserDetails userDetails = new UserDetails(userFullName, userEmail, userPhoneNumber, userPassword);
+                            String userId = task.getResult().getUser().getUid();
+                            dataRef.child(userId).setValue(userDetails);
+
+                            //Send user to loginActivity
+                            Toast.makeText(SignUpActivity.this, "Registration Successful", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(SignUpActivity.this, LoginActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
+                            finish();
+
+
+                        }
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        progressDialog.dismiss();
+                        Toast.makeText(SignUpActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+
+            }
+            else
+            {
+                Toast.makeText(SignUpActivity.this, "Password don't match", Toast.LENGTH_SHORT).show();
+            }
+
         }
-
     }
 
-    private void signUp()
-    {
-        Intent intent = (new Intent(SignUpActivity.this, LoginActivity.class));
-        startActivity(intent);
-        finish();
-    }
+
+
 
 
 

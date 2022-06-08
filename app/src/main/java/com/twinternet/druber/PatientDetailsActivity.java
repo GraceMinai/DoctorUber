@@ -1,13 +1,13 @@
 package com.twinternet.druber;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -15,6 +15,9 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -22,14 +25,18 @@ public class PatientDetailsActivity extends AppCompatActivity
 {
 
 
-    public TextView patientDetails;
-    public EditText fullName, idNumber, placeOfResidence, emailAddress, age, sex, phoneNumber;
+    public TextView gender;
+    public EditText et_fullName, et_placeOfResidence, et_mailAddress, et_age, et_phoneNumber;
     public Button next;
     public RadioGroup radioGroup;
     public RadioButton radioButton;
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private final String userid = mAuth.getUid();
+    private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+    private DatabaseReference dataRef = firebaseDatabase.getReference().child("Patient_Records").child(userid);
+    String patientGender = "";
+    private ProgressDialog progressDialog;
 
-    //Creating variables for the Database reference
-    DatabaseReference myDatabaseReference;
 
 
     @Override
@@ -37,44 +44,47 @@ public class PatientDetailsActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_details);
-
         getSupportActionBar().hide();
 
 
-
-        patientDetails = findViewById(R.id.tv_patient_details);
-        fullName = findViewById(R.id.edt_PatientDetails_FullName);
-        idNumber = findViewById(R.id.edt_PatientDetails_IdNumber);
-        placeOfResidence = findViewById(R.id.edt_PatientDetails_Residence);
-        emailAddress = findViewById(R.id.edt_PatientDetails_EmailAddress);
-        age = findViewById(R.id.edt_PatientDetails_Age);
-        sex = findViewById(R.id.edt_PatientDetails_Sex);
-        phoneNumber = findViewById(R.id.edt_PatientDetails_phoneNumber);
+        et_fullName = findViewById(R.id.edt_PatientDetails_FullName);
+        et_placeOfResidence = findViewById(R.id.edt_PatientDetails_Residence);
+        et_mailAddress = findViewById(R.id.edt_PatientDetails_EmailAddress);
+        et_age = findViewById(R.id.edt_PatientDetails_Age);
+        gender = findViewById(R.id.tv_patientDetails_gender);
+        et_phoneNumber = findViewById(R.id.edt_PatientDetails_phoneNumber);
         next = findViewById(R.id.btn_PatientDetails_Next);
         radioGroup = findViewById(R.id.radioGroup);
+        progressDialog = new ProgressDialog(this);
 
-        //Initialising the database reference
-        myDatabaseReference = FirebaseDatabase.getInstance().getReference().child("patientDetails");
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId)
+                {
+                    case R.id.radio_btn_male:
+                        patientGender = "Male";
+                        break;
+                    case R.id.radio_btn_female:
+                        patientGender = "Female";
+                        break;
+                }
+            }
+        });
 
 
-        //if above condition is met, run the following methods
         next.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                uploadingInformation();
-                next();
+                uploadPatientData();
 
             }
         });
 
 
     }
-
-
-
-
 
     public void checkRadioButton(View view)
     {
@@ -83,64 +93,74 @@ public class PatientDetailsActivity extends AppCompatActivity
 
     }
 
-    private void uploadingInformation()
-    {
-        //Converting the user input into String
-        String myFullName = fullName.getText().toString().trim();
-        String myIdNumber = idNumber.getText().toString().trim();
-        String myPlaceOfResidence = placeOfResidence.getText().toString().trim();
-        String myEmailAddress = emailAddress.getText().toString().trim();
-        String myAge = age.getText().toString().trim();
-        String mySex = sex.getText().toString().toString();
-        String myPhoneNumber = phoneNumber.getText().toString().trim();
+    //Uploading the data
+    private void uploadPatientData() {
 
-        //To ensure that user does not leave any blank fields (not empty)
-        if(!TextUtils.isEmpty(myFullName)
-        && !TextUtils.isEmpty(myIdNumber)
-        && !TextUtils.isEmpty(myPlaceOfResidence)
-        && !TextUtils.isEmpty(myEmailAddress)
-        && !TextUtils.isEmpty(myAge)
-        && !TextUtils.isEmpty(mySex)
-        && !TextUtils.isEmpty(myPhoneNumber))
+
+
+        //Obtaining patient's input
+        String fullName = et_fullName.getText().toString().trim();
+        String placeOfResidence = et_placeOfResidence.getText().toString().trim();
+        String email = et_mailAddress.getText().toString().trim();
+        String age = et_age.getText().toString().trim();
+        String phoneNumber = et_phoneNumber.getText().toString().trim();
+        String gender = patientGender;
+
+
+        //Checking that the user has filled all spaces
+        if (TextUtils.isEmpty(fullName) || TextUtils.isEmpty(placeOfResidence)||
+            TextUtils.isEmpty(email) || TextUtils.isEmpty(age) || TextUtils.isEmpty(phoneNumber))
         {
-
-            //If user has not left any spaces... Do this...
-            //Generating key for each user
-            String userKey = myDatabaseReference.push().getKey();
-
-            //Uploading information to the database
-            PatientDetails patientDetails = new PatientDetails(myFullName, myIdNumber, myPlaceOfResidence, myEmailAddress, myAge, mySex, myPhoneNumber);
-
-            //Creating a new child to store details of each specific user
-            myDatabaseReference.child(userKey).setValue(patientDetails);
-
-            //Clearing the edit texts
-            fullName.setText("");
-            idNumber.setText("");
-            placeOfResidence.setText("");
-            emailAddress.setText("");
-            age.setText("");
-            sex.setText("");
-            phoneNumber.setText("");
-
-            //For successful upload
-            Toast.makeText(this, "Successfully Uploaded", Toast.LENGTH_SHORT).show();
-
-
+            //Ask user to provide all details
+            Toast.makeText(this, "Please provide all details", Toast.LENGTH_SHORT).show();
 
         }
-
         else
         {
-            //if any field is left empty.. display the toast below
-            Toast.makeText(this, "Ensure all fields are filled then try again", Toast.LENGTH_SHORT).show();
+
+            progressDialog.setTitle("Uploading");
+            progressDialog.setMessage("Please wait...");
+            progressDialog.show();
+
+            //Store information in database
+            PatientData patientData = new PatientData(fullName, placeOfResidence, email, age, gender, phoneNumber);
+            dataRef.setValue(patientData).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void unused) {
+
+                    progressDialog.dismiss();
+
+                    et_fullName.setText("");
+                    et_placeOfResidence.setText("");
+                    et_mailAddress.setText("");
+                    et_age.setText("");
+                    et_phoneNumber.setText("");
+
+
+                    startActivity(new Intent(PatientDetailsActivity.this, SymptomsActivity.class));
+                    Toast.makeText(PatientDetailsActivity.this, "Successfully Uploaded", Toast.LENGTH_SHORT).show();
+
+
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    progressDialog.dismiss();
+                    //Print the error message
+                    Toast.makeText(PatientDetailsActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+
+                }
+            });
         }
+
+
+
+
     }
 
-    private void next()
-    {
-        Intent intent = (new Intent(PatientDetailsActivity.this, EmergencyActivity.class));
-        startActivity(intent);
-        finish();
-    }
+
+
+
+
+    
 }

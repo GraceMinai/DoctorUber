@@ -2,43 +2,51 @@ package com.twinternet.druber;
 
 public class UserDetails
 {
-    private String myFullName;
-    private String myEmail;
-    private String myPhoneNumber;
+     String userFullName;
+     String userEmail;
+     String userPhoneNumber;
+     String userPassword;
 
-    public UserDetails()
-    {
 
-    }
+     public UserDetails() {
+     }
 
-    public UserDetails(String myFullName, String myEmail, String myPhoneNumber)
-    {
-        this.myFullName = myFullName;
-        this.myEmail = myEmail;
-        this.myPhoneNumber = myPhoneNumber;
-    }
+     public UserDetails(String userFullName, String userEmail, String userPhoneNumber, String userPassword) {
+          this.userFullName = userFullName;
+          this.userEmail = userEmail;
+          this.userPhoneNumber = userPhoneNumber;
+          this.userPassword = userPassword;
+     }
 
-    public String getMyFullName() {
-        return myFullName;
-    }
+     public String getUserFullName() {
+          return userFullName;
+     }
 
-    public void setMyFullName(String myFullName) {
-        this.myFullName = myFullName;
-    }
+     public void setUserFullName(String userFullName) {
+          this.userFullName = userFullName;
+     }
 
-    public String getMyEmail() {
-        return myEmail;
-    }
+     public String getUserEmail() {
+          return userEmail;
+     }
 
-    public void setMyEmail(String myEmail) {
-        this.myEmail = myEmail;
-    }
+     public void setUserEmail(String userEmail) {
+          this.userEmail = userEmail;
+     }
 
-    public String getMyPhoneNumber() {
-        return myPhoneNumber;
-    }
+     public String getUserPhoneNumber() {
+          return userPhoneNumber;
+     }
 
-    public void setMyPhoneNumber(String myPhoneNumber) {
-        this.myPhoneNumber = myPhoneNumber;
-    }
+     public void setUserPhoneNumber(String userPhoneNumber) {
+          this.userPhoneNumber = userPhoneNumber;
+     }
+
+     public String getUserPassword() {
+          return userPassword;
+     }
+
+     public void setUserPassword(String userPassword) {
+          this.userPassword = userPassword;
+     }
 }

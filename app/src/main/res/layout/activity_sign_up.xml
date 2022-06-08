@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:scrollbars="none"
+    android:background="@drawable/gini07"
     tools:context=".SignUpActivity">
 
     <LinearLayout
@@ -21,21 +22,16 @@
 
             <ImageView
                 android:id="@+id/imageView_logotext"
-                android:layout_width="250dp"
-                android:layout_height="wrap_content"
-                android:src="@drawable/logotext"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:foregroundGravity="center"
+                android:src="@drawable/ud1"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
-                android:id="@+id/imageView_logo"
-                android:layout_width="80dp"
-                android:layout_height="100dp"
-                android:src="@drawable/mylogo"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -146,7 +142,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/pacifico"
                 android:textSize="16sp"
-                android:inputType="textEmailAddress"
+                android:inputType="text"
                 android:singleLine="true"
                 android:textColor="@color/black" />
 
@@ -167,7 +163,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/pacifico"
-                android:inputType="textEmailAddress"
+                android:inputType="text"
                 android:singleLine="true"
                 android:textColor="@color/black" />
 
@@ -189,7 +185,7 @@
                 android:id="@+id/btn_signUp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/black"
+                android:backgroundTint="@color/deepTeal"
                 android:fontFamily="@font/pacifico"
                 android:paddingStart="20dp"
                 android:paddingTop="10dp"

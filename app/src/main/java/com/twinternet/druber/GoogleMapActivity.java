@@ -7,11 +7,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -26,11 +31,13 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
@@ -47,14 +54,13 @@ public class GoogleMapActivity extends AppCompatActivity implements OnMapReadyCa
     private GoogleMap gMap;
     private FusedLocationProviderClient fusedLocationProviderClient;
     private Location userLastKnownLocation;
-    private final float DEFAULT_ZOOM = 21;
+    private final float DEFAULT_ZOOM = 12;
     private Location myLocation;
     private Button findDoctor;
-
-
-
-
-
+    private FirebaseAuth mAuth;
+    private long backPressedTime;
+    private Toast backPressedToast;
+    private Dialog about_popup;
 
 
 
@@ -64,11 +70,12 @@ public class GoogleMapActivity extends AppCompatActivity implements OnMapReadyCa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_google_map);
 
-        getSupportActionBar().hide();
 
-        findDoctor = findViewById(R.id.btn_findAvaibaleDoctors);
+        findDoctor = findViewById(R.id.btn_findAvailableDoctors);
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        mAuth = FirebaseAuth.getInstance();
+        about_popup = new Dialog(this);
 
 
         findDoctor.setOnClickListener(new View.OnClickListener() {
@@ -86,12 +93,123 @@ public class GoogleMapActivity extends AppCompatActivity implements OnMapReadyCa
 
     }
 
+
+    @Override
+    public void onBackPressed() {
+
+        if (backPressedTime + 2000 > System.currentTimeMillis())
+        {
+           backPressedToast.cancel();
+            super.onBackPressed();
+            return;
+        }
+        else
+        {
+            backPressedToast = Toast.makeText(getBaseContext(), "Press again to exit", Toast.LENGTH_SHORT);
+            backPressedToast.show();
+
+        }
+        backPressedTime = System.currentTimeMillis();
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.item_logout)
+        {
+            logoutUser();
+        }
+        else if (id == R.id.item_about)
+        {
+            aboutDrUber();
+
+        }
+        else if (id == R.id.item_invite)
+        {
+
+        }
+        else if (id == R.id.item_settings)
+        {
+
+            startActivity(new Intent(GoogleMapActivity.this, SettingsActivity.class));
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    //For displaying information about the app
+    private void aboutDrUber() {
+
+        about_popup = new Dialog(GoogleMapActivity.this);
+        about_popup.setContentView(R.layout.about_popup);
+        about_popup.getWindow().setBackgroundDrawable(getDrawable(R.drawable.background));
+        about_popup.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        about_popup.setCancelable(true);
+        //Adding animation to dialog
+        about_popup.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        about_popup.show();
+
+
+    }
+
+    //For loging out users
+    private void logoutUser() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Are you sure you want to logout?");
+        builder.setNegativeButton("No", null);
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                mAuth.signOut();
+                startActivity(new Intent(GoogleMapActivity.this, LoginActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
+                finish();
+
+            }
+        });
+        builder.show();
+    }
+
     @SuppressLint("MissingPermission")
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap)
     {
         gMap = googleMap;
         gMap.getUiSettings().setMyLocationButtonEnabled(true);
+
+        //Setting the map to only show Kisumu County
+        LatLng one = new LatLng(-0.108696, 34.746972);
+        LatLng two = new LatLng(-0.106341, 34.801904);
+
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+
+        builder.include(one);
+        builder.include(two);
+
+        LatLngBounds bounds = builder.build();
+
+        //Getting width and height to current screen
+        int width = getResources().getDisplayMetrics().widthPixels;
+        int height = getResources().getDisplayMetrics().heightPixels;
+
+        //Padding
+        int padding = (int) (width*0.20);
+
+        //Setting latlong bounds
+        gMap.setLatLngBoundsForCameraTarget(bounds);
+        //Move camera to fill the bound to screen
+        gMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding));
+        //Setting zoom level to prevent users from moving outside the bound area
+        //gMap.setMinZoomPreference(gMap.getCameraPosition().zoom);
 
 
 
@@ -186,6 +304,7 @@ public class GoogleMapActivity extends AppCompatActivity implements OnMapReadyCa
         MarkerOptions doctor1 = new MarkerOptions();
         doctor1.position(new LatLng(-0.10343164265809346, 34.75222825756009));
         doctor1.title("Dr. D.A. Minai");
+
         gMap.addMarker(doctor1);
         gMap.animateCamera(CameraUpdateFactory.newLatLng(doctor1.getPosition()));
         gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(doctor1.getPosition(), DEFAULT_ZOOM));
@@ -196,8 +315,9 @@ public class GoogleMapActivity extends AppCompatActivity implements OnMapReadyCa
             {
 
                 AlertDialog.Builder alert = new AlertDialog.Builder(GoogleMapActivity.this);
-                alert.setTitle("D.A.Minai");
+                alert.setTitle("Dr. D.A.Minai");
                 alert.setMessage("Specialty:  Dentist \n Phone Number: 0721463369");
+
                 alert.setNegativeButton("Cancel", null);
                 alert.setPositiveButton("Select", new DialogInterface.OnClickListener()
                 {
@@ -283,7 +403,7 @@ public class GoogleMapActivity extends AppCompatActivity implements OnMapReadyCa
         //Displaying available doctors
         MarkerOptions doctor4 = new MarkerOptions();
         doctor4.position(new LatLng(-0.10120005227706572, 34.75555424232755));
-        doctor4.title("Dr. Wendy D.M");
+        doctor4.snippet("Dr. Wendy D.M");
         gMap.addMarker(doctor4);
         gMap.animateCamera(CameraUpdateFactory.newLatLng(doctor4.getPosition()));
         gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(doctor4.getPosition(), DEFAULT_ZOOM));
@@ -346,6 +466,7 @@ public class GoogleMapActivity extends AppCompatActivity implements OnMapReadyCa
 
 
     }
+
 
 
     @Override

@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:scrollbars="vertical"
+    android:background="@drawable/gini07"
     tools:context=".SignUpActivity">
 
         <LinearLayout
@@ -29,17 +30,17 @@
                     android:id="@+id/listview_data"
                     android:layout_width="match_parent"
                     android:layout_height="554dp"
-                    android:choiceMode="multipleChoice">
+                    android:choiceMode="singleChoice">
 
                 </ListView>
 
                 <Button
-                        android:id="@+id/Emergency_contactDoctor_id"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                        android:id="@+id/btn_Symptom_contactDoctor_id"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:text="Contact Doctor"
-                        android:backgroundTint="@color/black">
+                        android:backgroundTint="@color/deepTeal">
 
                 </Button>
 

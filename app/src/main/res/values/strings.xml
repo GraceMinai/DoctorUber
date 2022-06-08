@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">Dr Uber</string>
     <string name="done">done></string>
+    <string name="_22">22</string>
+    <string name="amount">KSH 1800</string>
+    <string name="duration">5 minutes</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
 </resources>

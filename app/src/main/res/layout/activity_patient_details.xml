@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:scrollbars="none"
+    android:background="@drawable/gini07"
     tools:context=".SignUpActivity">
 
     <LinearLayout
@@ -47,25 +48,6 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:hint="ID Number"
-            android:textColorHint="@color/black"
-            app:boxStrokeColor="@color/black">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edt_PatientDetails_IdNumber"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:fontFamily="@font/pacifico"
-                android:singleLine="true"
-                android:textColor="@color/black" />
-
-        </com.google.android.material.textfield.TextInputLayout>
 
 
 
@@ -82,7 +64,7 @@
                 android:id="@+id/edt_PatientDetails_Residence"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number"
+                android:inputType="text"
                 android:fontFamily="@font/pacifico"
                 android:singleLine="true"
                 android:textColor="@color/black" />
@@ -129,25 +111,21 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
+
+
+        <TextView
+            android:id="@+id/tv_patientDetails_gender"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="Gender:"
+            android:fontFamily="@font/pacifico"
+            android:textColor="@color/black"
             android:layout_marginTop="16dp"
-            android:hint="Sex"
             android:textColorHint="@color/black"
-            app:boxStrokeColor="@color/black">
+            app:boxStrokeColor="@color/black"
+            android:layout_marginStart="15dp"
+            android:textSize="18sp"/>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edt_PatientDetails_Sex"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:fontFamily="@font/pacifico"
-                android:singleLine="true"
-                android:textColor="@color/black" />
-
-        </com.google.android.material.textfield.TextInputLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -242,7 +220,7 @@
                 android:id="@+id/btn_PatientDetails_Next"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/black"
+                android:backgroundTint="@color/deepTeal"
                 android:paddingStart="20dp"
                 android:paddingTop="10dp"
                 android:paddingEnd="20dp"
